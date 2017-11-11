@@ -1,21 +1,30 @@
-open Core_kernel
+open! Core_kernel
 open Day_counter
 
-module To_test = struct
-  let test_us360 = let test_start_date = Date.create_exn ~y:2006 ~m:Month.Aug ~d:20 in 
-    let test_end_date = Date.create_exn ~y:2007 ~m:Month.Feb ~d:20 in 
-    US_thirty_360.day_count test_start_date test_end_date
-end  
-(* The tests *)
-let us360 () =
-  Alcotest.(check int) "Check us360" 180 To_test.test_us360
-
-let test_set = [
-  "\xF0\x9F\x90\xAB  Capitalize", `Quick, us360;  
-]  
-
-(* Run it *)
-let () =
-  Alcotest.run "My first test" [
-    "test_1", test_set;    
+(* ISDA - Example 1: End dates do not involve the last day of February *)
+let start_dates = [
+  Date.create_exn ~y:2006 ~m:Month.Aug ~d:20; 
+  Date.create_exn ~y:2007 ~m:Month.Feb ~d:20;
+  Date.create_exn ~y:2006 ~m:Month.Aug ~d:31; 
 ]
+
+let end_dates = [
+  Date.create_exn ~y:2007 ~m:Month.Feb ~d:20; 
+  Date.create_exn ~y:2007 ~m:Month.Aug ~d:20;
+  Date.create_exn ~y:2007 ~m:Month.Feb ~d:28;
+]
+
+let expected = [180; 180; 177]  
+
+let us360 start_dates end_dates expected = 
+  let start_ends = List.zip_exn start_dates end_dates in
+  let start_ends_expected = List.zip_exn start_ends expected in
+  List.map start_ends_expected (fun ((s,e),exp) -> fun () -> Alcotest.(check int) "Check us360" exp (US_thirty_360.day_count s e))   
+
+let test_set = 
+  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Quick, t)  
+
+let () =
+  Alcotest.run "Test day counters" [
+    "US_thirty_360", test_set;      
+  ]
