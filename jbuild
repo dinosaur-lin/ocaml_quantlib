@@ -1,7 +1,11 @@
 (jbuild_version 1)
 
 ;; This declare the hello_world executable implemented by hello_world.ml
-(executable
- ((name quantlib)
-  (libraries (core_kernel))
+(executables
+ ((names (quantlib test))
+  (libraries (core_kernel alcotest))  
   ))
+
+(alias
+ ((name DEFAULT)
+(deps (quantlib.exe test.exe))))  
