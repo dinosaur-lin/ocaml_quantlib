@@ -2,10 +2,10 @@
 
 ;; This declare the hello_world executable implemented by hello_world.ml
 (executables
- ((names (quantlib test))
+ ((names (test))
   (libraries (core_kernel alcotest))  
   ))
 
 (alias
  ((name DEFAULT)
-(deps (quantlib.exe test.exe))))  
+(deps (test.exe))))
