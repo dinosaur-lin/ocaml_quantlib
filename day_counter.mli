@@ -1,6 +1,6 @@
 open! Core_kernel
 
-type convention = 
+type t = 
   | USThirty360
   | BondThirty360
   | EuroThirty360
@@ -8,4 +8,4 @@ type convention =
   | ItalianThirty360
   | Simple
 
-val day_count: convention -> Date.t -> Date.t -> int
+val day_count: t -> Date.t -> Date.t -> int

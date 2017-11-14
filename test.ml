@@ -22,7 +22,7 @@ let us360 start_dates end_dates expected =
   List.map start_ends_expected (fun ((s,e),exp) -> fun () -> Alcotest.(check int) "Check us360" exp (day_count USThirty360 s e))   
 
 let test_set = 
-  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Quick, t)  
+  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Quick,   t)  
 
 let () =
   Alcotest.run "Test day counters" [

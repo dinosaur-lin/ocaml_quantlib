@@ -1,6 +1,6 @@
 open! Core_kernel
 
-type convention = 
+type t = 
   | USThirty360
   | BondThirty360
   | EuroThirty360

@@ -1,4 +1,4 @@
-type frequency = 
+type t = 
   | NoFrequency 
   | Once
   | Annual
