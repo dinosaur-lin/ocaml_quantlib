@@ -1,6 +1,6 @@
 open! Core_kernel
 
-type calendar =
+type t =
   | USSettlementCalendar
   | USGovernmentBondCalendar
 
@@ -70,7 +70,9 @@ let is_chrismas_day dt =
   let (d, m, y, w) = extract_day_month_year_weekday dt in
   dt = ((Date.create_exn ~y:y ~m:Month.Dec ~d:25) |> adjust_weekend_holiday_US)
 
-let is_business_day dt =
+let is_business_day t dt =
+  match t with 
+  | USGovernmentBondCalendar ->
     let h = Date.is_weekend dt 
       || is_new_year_day dt 
       || is_martin_luther_king_birthday dt 
@@ -84,3 +86,10 @@ let is_business_day dt =
       || is_thanksgiving_day dt
       || is_chrismas_day dt in
     if Date.is_weekend dt || h then false else true
+   | USSettlementCalendar -> true 
+
+let adjust t c dt =
+  match c with 
+  | Business_day_convention.Unadjusted -> dt
+  | Business_day_convention.Following -> dt
+  | _ -> dt (* not implemented exception *)

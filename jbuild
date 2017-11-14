@@ -2,10 +2,10 @@
 
 ;; This declare the hello_world executable implemented by hello_world.ml
 (executables
- ((names (test))
+ ((names (test test_calendar))
   (libraries (core_kernel alcotest))  
   ))
 
 (alias
  ((name DEFAULT)
-(deps (test.exe))))
+(deps (test.exe test_calendar.exe))))
