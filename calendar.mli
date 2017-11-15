@@ -6,4 +6,6 @@ type t =
 
 val is_business_day: t -> Date.t -> bool
 
+val is_holiday: t -> Date.t -> bool
+
 val adjust: t -> Business_day_convention.t -> Date.t -> Date.t

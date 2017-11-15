@@ -4,6 +4,8 @@ type t =
   | USSettlementCalendar
   | USGovernmentBondCalendar
 
+exception Not_implemented
+
 (**
 In the United States, if a holiday falls on Saturday, it's observed on the preceding Friday.
 If it falls on Sunday, it's observed on the next Monday.
@@ -72,7 +74,7 @@ let is_chrismas_day dt =
 
 let is_business_day t dt =
   match t with 
-  | USGovernmentBondCalendar ->
+  | USSettlementCalendar ->
     let h = Date.is_weekend dt 
       || is_new_year_day dt 
       || is_martin_luther_king_birthday dt 
@@ -85,11 +87,38 @@ let is_business_day t dt =
       || is_veterans_day dt
       || is_thanksgiving_day dt
       || is_chrismas_day dt in
-    if Date.is_weekend dt || h then false else true
-   | USSettlementCalendar -> true 
+    if h then false else true
+   | USGovernmentBondCalendar -> 
+   (* TODO: easter Monday is missing*)
+   let h = Date.is_weekend dt 
+      || is_new_year_day dt 
+      || is_martin_luther_king_birthday dt 
+      || is_washington_birthday dt
+      || is_memorial_day dt 
+      || is_labor_day dt 
+      || is_independence_day dt
+      || is_labor_day dt
+      || is_columbus_day dt
+      || is_veterans_day dt
+      || is_thanksgiving_day dt
+      || is_chrismas_day dt in
+    if h then false else true 
+
+let is_holiday t dt =
+  not (is_business_day t dt)
+
+let rec find_business_day t dt next_day =
+  if is_business_day t dt then dt else 
+  let dt1 = next_day dt in
+  find_business_day t dt1 next_day
 
 let adjust t c dt =
   match c with 
   | Business_day_convention.Unadjusted -> dt
-  | Business_day_convention.Following -> dt
-  | _ -> dt (* not implemented exception *)
+  | Business_day_convention.Following -> 
+    let next_day = fun dt -> Date.add_days dt 1 in 
+    find_business_day t dt next_day
+  | Business_day_convention.Preceding -> 
+    let next_day = fun dt -> Date.add_days dt (-1) in 
+    find_business_day t dt next_day
+  | _ -> raise Not_implemented (* not implemented exception *)
