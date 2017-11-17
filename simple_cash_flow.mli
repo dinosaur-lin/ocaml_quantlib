@@ -5,4 +5,5 @@ type t = {
   amount: float;
 }
 
-val create: Date.t -> float  
+val create: Date.t -> float -> t  
+val has_occured: t -> Date.t -> bool
