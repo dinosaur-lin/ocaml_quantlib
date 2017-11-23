@@ -1,0 +1,10 @@
+(jbuild_version 1)
+
+(library (
+  (name ocaml_quantlib)
+  (public_name ocaml_quantlib)  
+  (flags (:standard -safe-string))
+  (libraries (
+    core_kernel    
+  ))
+))
