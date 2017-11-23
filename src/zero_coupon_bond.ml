@@ -5,11 +5,10 @@ type zcb_t = {
   maturity_date: Date.t;
   payment_convention: Business_day_convention.t;
   face_amount: float;
-  settlement_day: int;
   redemption: float;
+  settlement_day: int;
   calendar: Calendar.t;
 }
-
 
 let redemption_date zcb = 
   Calendar.adjust zcb.calendar zcb.payment_convention zcb.maturity_date

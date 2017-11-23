@@ -1,0 +1,21 @@
+opam-version: "1.2"
+maintainer: "Yunfeng Lin (yunfeng.lin04@gmail.com)"
+authors: [ "Yunfeng Lin (yunfeng.lin04@gmail.com)" ]
+license: "MIT"
+homepage: "https://github.com/dinosaur-lin/ocaml_quantlib"
+dev-repo: "git@github.com:dinosaur-lin/ocaml_quantlib.git"
+bug-reports: "https://github.com/dinosaur-lin/ocaml_quantlib/issues"
+doc: "http://www.cl.cam.ac.uk/~lw525/owl/"
+
+name: "ocaml_quantlib"
+version: "dev"
+
+build: [
+  ["jbuilder" "subst" "-n" name] {pinned}
+  ["jbuilder" "build" "-p" name "-j" jobs]
+]
+
+depends: [    
+  "ocamlbuild" {build}
+  "ocamlfind" {build}  
+]

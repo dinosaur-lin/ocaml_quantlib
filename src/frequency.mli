@@ -8,6 +8,7 @@ type t =
   | Bimonthly
   | Monthly
   | EveryFourthWeek
+  | Biweekly
   | Weekly
   | Daily
   | OtherFrequency
