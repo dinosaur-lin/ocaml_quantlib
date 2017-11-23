@@ -4,8 +4,18 @@ type t = {
   freq: Frequency.t;
 }
 
-let compound_factor ir year_frac =
+let compound_rate r t f =
+  (1.0 +. r /. f) ** (f *. t)
+
+let simple_rate r t =
+  1.0 +. r *. t
+
+let compound_factor ir t =
   let f = Frequency.to_int ir.freq |> float_of_int in
   match ir.comp with 
-  | Compounding.Simple -> 1.0 +. ir.rate *. year_frac
-  | Compounding.Compounded -> (1.0 +. ir.rate /. f) ** f *. year_frac  
+  | Compounding.Simple -> simple_rate ir.rate t
+  | Compounding.Compounded -> compound_rate ir.rate t f
+  | Compounding.Continous -> exp (ir.rate *. t)
+  | Compounding.SimpleThenCompounded -> if t <= 1.0 /. f then simple_rate ir.rate t else compound_rate ir.rate t f
+  | Compounding.CompoundedThenSimple -> if t > 1.0 /. f then simple_rate ir.rate t else compound_rate ir.rate t f
+
