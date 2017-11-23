@@ -1,11 +1,16 @@
 (jbuild_version 1)
 
-;; This declare the hello_world executable implemented by hello_world.ml
-(executables
- ((names (test test_calendar))
-  (libraries (core_kernel alcotest))  
+(executables (
+  (names (test_runner))
+  (libraries (
+    ocaml_quantlib
+    alcotest
   ))
+  (flags (:standard -safe-string))
+))
 
-(alias
- ((name DEFAULT)
-(deps (test.exe test_calendar.exe))))
+(alias (
+  (name    runtest)
+  (deps    (test_runner.exe))
+  (action  (run ${<}))
+))

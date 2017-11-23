@@ -1,4 +1,5 @@
 open! Core_kernel
+open Ocaml_quantlib
 open Day_counter
 
 (* ISDA - Example 1: End dates do not involve the last day of February *)
@@ -22,9 +23,4 @@ let us360 start_dates end_dates expected =
   List.map start_ends_expected (fun ((s,e),exp) -> fun () -> Alcotest.(check int) "Check us360" exp (day_count USThirty360 s e))   
 
 let test_set = 
-  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Quick,   t)  
-
-let () =
-  Alcotest.run "Test day counters" [
-    "US_thirty_360", test_set;      
-  ]
+  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Slow,   t)  
