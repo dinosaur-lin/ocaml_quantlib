@@ -1,7 +1,10 @@
+open! Core_kernel
+
 type t = {
   rate: float;
   comp: Compounding.t;  
   freq: Frequency.t;
+  dc: Day_counter.t;
 }
 
 let compound_rate r t f =
@@ -18,4 +21,12 @@ let compound_factor ir t =
   | Compounding.Continous -> exp (ir.rate *. t)
   | Compounding.SimpleThenCompounded -> if t <= 1.0 /. f then simple_rate ir.rate t else compound_rate ir.rate t f
   | Compounding.CompoundedThenSimple -> if t > 1.0 /. f then simple_rate ir.rate t else compound_rate ir.rate t f
+
+let discount_factor ir t =
+  1.0 /. compound_factor ir t 
+
+let discount_factor ir d1 d2 =
+  let time = Day_counter.year_frac ir.dc d1 d2 in
+  discount_factor ir time
+
 
