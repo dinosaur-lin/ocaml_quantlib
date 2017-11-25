@@ -42,4 +42,11 @@ let day_count c d1 d2 = match c with
   | USThirty360 | BondThirty360 -> thirty_360_US_day_count d1 d2 
   | EuroThirty360 | EuroBondThirty360 -> thirty_360_EU_day_count d1 d2
   | ItalianThirty360 -> thirty_360_IT_day_count d1 d2
-  | Simple ->  thirty_360_US_day_count d1 d2       
+  | Simple ->  thirty_360_US_day_count d1 d2
+
+let year_frac c d1 d2 =
+  let ndays = day_count c d1 d2 |> float_of_int in
+  let days_year = match c with
+  | USThirty360 | BondThirty360 | EuroThirty360 | EuroBondThirty360 | ItalianThirty360 -> 360.0
+  | Simple -> 360.0 in
+  ndays /. days_year

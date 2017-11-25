@@ -9,3 +9,5 @@ type t =
   | Simple
 
 val day_count: t -> Date.t -> Date.t -> int
+
+val year_frac: t -> Date.t -> Date.t -> float
