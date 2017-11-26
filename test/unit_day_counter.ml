@@ -1,29 +1,45 @@
 open! Core_kernel
 open Ocaml_quantlib
 
-(* ISDA - Example 1: End dates do not involve the last day of February *)
-let start_dates = [
-  Date.create_exn ~y:2006 ~m:Month.Aug ~d:20; 
-  Date.create_exn ~y:2007 ~m:Month.Feb ~d:20;
-  Date.create_exn ~y:2007 ~m:Month.Aug ~d:20; 
-  Date.create_exn ~y:2006 ~m:Month.Aug ~d:31; 
-]
+type test_entry = {
+  start_date: Date.t;
+  end_date: Date.t;
+  expected_dc: int;
+}
 
-let end_dates = [
-  Date.create_exn ~y:2007 ~m:Month.Feb ~d:20; 
-  Date.create_exn ~y:2007 ~m:Month.Aug ~d:20;
-  Date.create_exn ~y:2008 ~m:Month.Feb ~d:20; 
-  Date.create_exn ~y:2007 ~m:Month.Feb ~d:28;
+let test_enties = [
+  (* ISDA - Example 1: End dates do not involve the last day of February *)
+  {
+    start_date = Date.create_exn ~y:2006 ~m:Month.Aug ~d:20;
+    end_date = Date.create_exn ~y:2007 ~m:Month.Feb ~d:20;
+    expected_dc = 180;
+  };
+  {
+    start_date = Date.create_exn ~y:2007 ~m:Month.Feb ~d:20;
+    end_date = Date.create_exn ~y:2007 ~m:Month.Aug ~d:20;
+    expected_dc = 180;
+  };  
+  {
+    start_date = Date.create_exn ~y:2007 ~m:Month.Aug ~d:20;
+    end_date = Date.create_exn ~y:2008 ~m:Month.Feb ~d:20;
+    expected_dc = 180;
+  };
+
+  (* ISDA - Example 2: End dates include some end-February dates *)
+  {
+    start_date = Date.create_exn ~y:2006 ~m:Month.Aug ~d:31;
+    end_date = Date.create_exn ~y:2007 ~m:Month.Feb ~d:28;
+    expected_dc = 178;
+  };      
 ]
 
 let us_thirty_360_dc = Day_counter.create_US_thirty_360 ()
 
 let expected = [180; 180; 180; 178]  
 
-let us360 start_dates end_dates expected = 
-  let start_ends = List.zip_exn start_dates end_dates in
-  let start_ends_expected = List.zip_exn start_ends expected in
-  List.map start_ends_expected (fun ((s,e),exp) -> fun () -> Alcotest.(check int) "Check US thirty 360" exp (Day_counter.day_count us_thirty_360_dc s e))   
+let test_cases dc test_entries = 
+  List.map test_entries (fun e -> 
+  fun () -> Alcotest.(check int) (Day_counter.name dc) e.expected_dc (Day_counter.day_count dc e.start_date e.end_date))   
 
 let test_set = 
-  List.map (us360 start_dates end_dates expected) (fun t -> "us360", `Slow,   t)  
+  List.map (test_cases us_thirty_360_dc test_enties) (fun t -> "us360", `Slow,   t)  
