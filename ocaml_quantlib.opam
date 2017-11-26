@@ -16,6 +16,8 @@ build: [
 ]
 
 depends: [    
-  "ocamlbuild" {build}
-  "ocamlfind" {build}  
+  "jbuilder" {build & >= "1.0+beta16"}
+  "core_kernel" {>= "v0.9.1"}
 ]
+
+available: [ ocaml-version >= "4.05" ]

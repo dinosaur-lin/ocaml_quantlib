@@ -5,18 +5,20 @@ open Ocaml_quantlib
 let start_dates = [
   Date.create_exn ~y:2006 ~m:Month.Aug ~d:20; 
   Date.create_exn ~y:2007 ~m:Month.Feb ~d:20;
+  Date.create_exn ~y:2007 ~m:Month.Aug ~d:20; 
   Date.create_exn ~y:2006 ~m:Month.Aug ~d:31; 
 ]
 
 let end_dates = [
   Date.create_exn ~y:2007 ~m:Month.Feb ~d:20; 
   Date.create_exn ~y:2007 ~m:Month.Aug ~d:20;
+  Date.create_exn ~y:2008 ~m:Month.Feb ~d:20; 
   Date.create_exn ~y:2007 ~m:Month.Feb ~d:28;
 ]
 
 let us_thirty_360_dc = Day_counter.create_US_thirty_360 ()
 
-let expected = [180; 180; 178]  
+let expected = [180; 180; 180; 178]  
 
 let us360 start_dates end_dates expected = 
   let start_ends = List.zip_exn start_dates end_dates in
