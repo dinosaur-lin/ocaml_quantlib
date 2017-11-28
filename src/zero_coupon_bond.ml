@@ -14,6 +14,6 @@ let redemption_date zcb =
   Calendar.adjust zcb.calendar zcb.payment_convention zcb.maturity_date
 
 let cash_flow zcb =
-  Simple_cash_flow.create (redemption_date zcb) zcb.redemption
+  Coupon.create (redemption_date zcb) zcb.redemption
 
 

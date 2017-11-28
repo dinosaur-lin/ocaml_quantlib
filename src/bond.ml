@@ -6,4 +6,3 @@ type t = {
   issue_date: Date.t;
   maturity_date: Date.t;
 }
-
