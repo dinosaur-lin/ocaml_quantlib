@@ -11,7 +11,10 @@ let create dt amt = {
 }
 
 let has_occured cf ref_date = 
-  let r = Date.compare cf.date ref_date in 
-  match r with 
-  | -1 -> true
-  | _ -> false
+  if Date.(cf.date >= ref_date) then true else false
+
+let amount cf = cf.amount
+
+let date cf = cf.date
+
+

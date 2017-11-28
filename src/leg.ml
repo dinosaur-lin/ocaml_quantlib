@@ -1,1 +1,7 @@
-type t = Simple_cash_flow.t array 
+open! Core_kernel
+
+type t = {
+  coupons: Coupon.t list;
+}
+
+let coupons leg = leg.coupons

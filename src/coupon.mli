@@ -7,3 +7,5 @@ type t = {
 
 val create: Date.t -> float -> t  
 val has_occured: t -> Date.t -> bool
+val date: t -> Date.t
+val amount: t -> float
