@@ -4,3 +4,4 @@ type t = {
 }
 
 val coupons: t -> Coupon.t list
+val create: Coupon.t list -> t
