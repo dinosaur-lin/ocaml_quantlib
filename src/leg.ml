@@ -5,3 +5,4 @@ type t = {
 }
 
 let coupons leg = leg.coupons
+let create coupons = { coupons; }

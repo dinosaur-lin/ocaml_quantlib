@@ -11,3 +11,4 @@ type zcb_t = {
 }
 
 val redemption_date: zcb_t -> Date.t 
+val cash_flow: zcb_t -> Leg.t
